@@ -1,0 +1,27 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+@using MODEL;
+@model List<Members>
+<h2>交友广场</h2>
+<div>
+    @foreach (Members m in Model)
+    {
+        <div class="member">
+            <div>
+                <img src="@Url.Content("~/Content/Images/"+m.Portrait)" width="160" height="140" />
+            </div>
+        </div>
+    }
+</div>
+@section head
+{
+    <style type="text/css">
+        .member {
+            display: inline-block;
+            margin: 5px;
+            width: 160px;
+            height: 140px;
+        }
+    </style>
+}
