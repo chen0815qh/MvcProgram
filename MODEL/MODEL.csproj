@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{2B7E1B25-815B-4C11-BAEB-F25A6DD9783A}</ProjectGuid>
+    <ProjectGuid>{756B6F14-E043-484F-B544-2B4048FE5633}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>MODEL</RootNamespace>
@@ -30,8 +30,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -39,7 +46,55 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExtentionModel\Members.cs" />
+    <Compile Include="LeaveMessage.cs">
+      <DependentUpon>MessageBoardSys.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Members.cs">
+      <DependentUpon>MessageBoardSys.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MessageBoardSys.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MessageBoardSys.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MessageBoardSys.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MessageBoardSys.tt</DependentUpon>
+    </Compile>
+    <Compile Include="MessageBoardSys.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MessageBoardSys.edmx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EntityDeploy Include="MessageBoardSys.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>MessageBoardSys.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.Config" />
+    <None Include="MessageBoardSys.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>MessageBoardSys.edmx</DependentUpon>
+      <LastGenOutput>MessageBoardSys.Context.cs</LastGenOutput>
+    </None>
+    <None Include="MessageBoardSys.edmx.diagram">
+      <DependentUpon>MessageBoardSys.edmx</DependentUpon>
+    </None>
+    <None Include="MessageBoardSys.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>MessageBoardSys.edmx</DependentUpon>
+      <LastGenOutput>MessageBoardSys.cs</LastGenOutput>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
