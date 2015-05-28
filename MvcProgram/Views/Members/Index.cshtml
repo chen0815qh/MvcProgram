@@ -4,24 +4,93 @@
 @using MODEL;
 @model List<Members>
 <h2>交友广场</h2>
-<div>
+<div style="background-color:#f8f8f8;position:relative;z-index:0;padding:10px;">
     @foreach (Members m in Model)
     {
         <div class="member">
-            <div>
-                <img src="@Url.Content("~/Content/Images/"+m.Portrait)" width="160" height="140" />
+            <div style="overflow:hidden;width:160px;height:140px;position:relative;z-index:100;">
+                <a href="/Members/Leave/@m.MemberId" title="@m.NickName">
+                    <img src="@Url.Content("~/Content/Images/"+m.Portrait)" width="160" height="140" style="opacity:1;" />
+                </a>
             </div>
         </div>
+    }
+</div>
+<div class="pageBar">
+    @*这里得到分页条*@
+    @if (ViewBag.MemberCount != null)
+    {
+        int count = ViewBag.MemberCount;
+        int pageIndex = Convert.ToInt32(ViewContext.RouteData.Values["pageIndex"]);
+        int pageSize = ViewBag.PageSize;
+        int pageCount = count % pageSize == 0 ? count / pageSize : count / pageSize + 1;
+        int nextPageIndex = pageIndex >= pageCount ? pageCount : pageIndex + 1;
+        int previousPageIndex = pageIndex <= 1 ? 1 : pageIndex - 1;
+        <span>共 @count 条记录</span><span>当前第 <span class="pageNumber">@ViewContext.RouteData.Values["pageIndex"]</span> 页 共 @pageCount 页</span>
+
+        <a href="/memberlist/page/1">首页</a>
+        @*生成前半段部分*@
+        @Html.ActionLink("上一页", "Index", new { pageIndex=previousPageIndex})
+             
+                                                            
+        {
+            for (int i = 4; i > 0; i--)
+            {
+                if (pageIndex - i > 0)
+                {
+                    <a href="@Url.RouteUrl("MemberList",new{pageIndex=pageIndex-i})">@(pageIndex - i)</a>
+                }
+            }
+
+        }
+        
+        <a href="@Url.RouteUrl("MemberList",new{pageIndex=pageIndex})" style="color:Red;font-size:14px;font-weight:bolder;">@(pageIndex)</a> @*当前页*@
+        
+        {
+            for (int i = 1; i <= 4; i++)
+            {
+                if (pageIndex + i <= pageCount)
+                {
+                    <a href="@Url.RouteUrl("MemberList", new { pageIndex = pageIndex + i })">@(pageIndex + i)</a>
+                }
+            }
+        }
+        @Html.ActionLink("下一页", "Index",new { pageIndex=nextPageIndex})
+        <a href="/memberlist/page/@pageCount">末页</a>
     }
 </div>
 @section head
 {
     <style type="text/css">
+        .pageNumber {
+            color: red;
+            font-weight: bolder;
+        }
+
+        .pageBar {
+            padding: 10px 0px;
+        }
+
+            .pageBar a {
+                margin: 0px 4px;
+            }
+
         .member {
             display: inline-block;
+            opacity: 1;
             margin: 5px;
             width: 160px;
             height: 140px;
+            background-color: White;
         }
     </style>
+    <script type="text/javascript">
+        $(function () {
+            $("div.member img").mouseenter(function () {
+                $(this).css({ "transform": "scale(1.2)", "transition": "transform linear 0.5s" });
+            }).mouseleave(function () {
+                $(this).css({ "transform": "scale(1)", "transition": "transform linear 0.5s" });
+            });
+        });
+    </script>
 }

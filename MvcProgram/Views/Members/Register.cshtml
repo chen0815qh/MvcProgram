@@ -15,7 +15,7 @@
     //Html.EnableClientValidation(false);
     }
 
-    @using (Html.BeginForm("Register", "Members", FormMethod.Post, new { enctype="multipart/form-data"}))
+    @using (Html.BeginForm("Register", "Members", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
         //注意@**@是Razor的注释语法。
         @*class是C#关键字，所以要用@符号来转义。也可以将class的第一个字母大写开头，C#区分大小写*@
@@ -57,12 +57,13 @@
         @Html.TextBoxFor(m => m.Email, new { @class = "form-control", style = "display:inline;margin-bottom:10px;" })
         <br />
         @Html.LabelFor(m => m.Gender, new { @class = "col-md-2 control-label", style = "text-align:right" })
-        @Html.RadioButtonFor(m => m.Gender, "男", new { @checked="checked"}) <span>男</span>
+        @Html.RadioButtonFor(m => m.Gender, "男", new { @checked = "checked" }) <span>男</span>
         @Html.RadioButtonFor(m => m.Gender, "女") <span>女</span>
         <br />
         <div>
-            @*@Html.ValidationSummary(false)*@
-            <span class="col-md-2 control-label"></span><input type="submit" value="注册" class="btn btn-default" />
+
+            <input type="submit" value="注册" class="btn btn-default" />
+            <span style="color:red;">@ViewData["Msg"]</span>
         </div>
     }
 </div>

@@ -11,8 +11,8 @@ namespace MODEL
     public partial class Members
     {
         [Display(Name="确认密码")]
-        [Required]
-        [Compare("Password", ErrorMessage = "密码和确认密码必须一致")]
+        [Required(ErrorMessage="确认密码不能为空")]
+        [Compare("Password",  ErrorMessage = "密码和确认密码必须一致")]
         //当提交表单时，会将该字段的值和Password进行比较，如果不相等，则验证不通过。
         public string ConfirmPassword
         {
