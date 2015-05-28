@@ -1,0 +1,34 @@
+﻿@{
+    ViewBag.Title = "Login";
+}
+@using MODEL;
+@*@model Members*@
+@section head
+{
+    <style type="text/css">
+        .validation-summary-errors{
+            display:inline-block;
+            list-style-type:none;
+            margin:0px;
+        }
+        .validation-summary-errors li{
+            display:inline-block;
+        }
+    </style>
+}
+<h2>登录</h2>
+<br />
+@using (Html.BeginForm("Login", "Members", FormMethod.Post))
+{
+    @(Html.Label("会员账号", new { @class = "col-md-2 control-label", style = "text-align:right" }))
+    @(Html.TextBox("MemberAccount",null, new { @class = "form-control", style = "display:inline;margin-bottom:10px;" }))
+    <br />
+    @(Html.Label("密码", new { @class = "col-md-2 control-label", style = "text-align:right" }))
+    @(Html.Password("Password",null, new { @class = "form-control", style = "display:inline;margin-bottom:10px;" }))
+    <br />
+    <label class="col-md-2 control-label"></label>
+    <input type="submit" value="登录" class="btn btn-default" />@Html.ValidationSummary(true)
+    <br />
+}
+
+

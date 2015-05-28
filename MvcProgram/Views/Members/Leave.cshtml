@@ -1,0 +1,31 @@
+﻿@{
+    //ViewBag.Title = "Leave";
+}
+@using MODEL;
+@model Members
+@section head{
+    <script src="~/Content/Js/UEditor/ueditor.config.js"></script>
+    <script src="~/Content/Js/UEditor/ueditor.all.js"></script>
+    <script src="~/Content/Js/UEditor/lang/zh-cn/zh-cn.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            var ue = UE.getEditor("editor");
+        });
+    </script>
+}
+<div>
+    <img src="~/Content/Images/@Model.Portrait" width="120" height="120" />
+</div>
+<h4>给 <span style="color:Green;font-size:20px;">@(string.IsNullOrEmpty(Model.NickName)?Model.MemberAccount:Model.NickName)</span> 留言：</h4>
+@{
+    Html.BeginForm("Leave", "Members", FormMethod.Post);
+}
+<div id="editor" style="margin:10px 0px;">
+
+</div>
+<div style="text-align:right;">
+    <input type="submit" value="留言" class="btn btn-default" />
+</div>
+@{
+    Html.EndForm();
+}
