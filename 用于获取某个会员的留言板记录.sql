@@ -9,8 +9,7 @@ begin
   select Row_Number() over(order by msg.AddTime desc) RowIndex,* from Members m 
   inner join LeaveMessage msg on m.MemberId=msg.MemberId
   where m.MemberId=@memberId )
-  
-  );
+  )
   
   select * from tmp
   
