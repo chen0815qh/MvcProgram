@@ -1,6 +1,7 @@
 ﻿using MODEL;
 using System;
 using System.Collections.Generic;
+//using System.Data.Entity.Core.Objects;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -25,9 +26,14 @@ namespace MvcProgram.Controllers
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
-        [ValidateInput(false)]//关闭XSS攻击检查。
+        [ValidateInput(false)]//关闭XSS攻击检查,注意：设置了此值之后还要设置网站应用根目录下的web.config <httpRuntime requestValidationMode="2.0"/>才行
         public ActionResult Leave(LeaveMessage message)
         {
+            if (string.IsNullOrEmpty(Request.Form["editorValue"]))
+            {
+                ViewData["MsgTip"] = "请输入留言内容";
+                return View();
+            }
             Members member = Session["Member"] as Members;
             int id = 0;
             if (member == null)
@@ -39,14 +45,18 @@ namespace MvcProgram.Controllers
             {
                 return RedirectToRoute("MemberList");
             }
+            id = member.MemberId;
+            Members author = Session["MemberInfo"] as Members;
             message.MemberId = id;
+            message.AuthorId = author.MemberId;
             message.IP = Request.UserHostAddress;
             //editorValue：用于UEditor提交的表单元素的值 Request.Form["editorValue"]
             message.MsgContent = HttpUtility.HtmlEncode(Request.Form["editorValue"]);
-            message.IsReply = false;
+            message.ReplyId = 0;
             message.AddTime = DateTime.Now;
             context.LeaveMessage.Add(message);
             context.SaveChanges();
+            ViewData["MsgTip"] = "留言成功";
             return View(member);
         }
         //
@@ -63,9 +73,13 @@ namespace MvcProgram.Controllers
             return View(memberList);
         }
 
-        public ActionResult MessageBoard()
+        public ActionResult MessageBoard(int page = 1)
         {
-            return View();
+            Members member = Session["MemberInfo"] as Members;
+            //这里获得某个会员的留言板的所有的记录，每页显示10条,这里包括了留言和回复哦。
+            List<MsgList> msgList= context.Proc_GetMessageList(page, 10, member.MemberId).ToList();//不要忘了引用System.Data.Entity这个程序集
+
+            return View(msgList);
         }
 
         [AcceptVerbs(HttpVerbs.Get)]
@@ -86,7 +100,7 @@ namespace MvcProgram.Controllers
                 //"",表示模型级错误，就是不针对于某个属性进行的错误提示。
                 ModelState.AddModelError("", "请输入用户名");
             }
-            else if(string.IsNullOrEmpty(password))
+            else if (string.IsNullOrEmpty(password))
             {
                 ModelState.AddModelError("", "请输入密码");
             }
@@ -97,7 +111,7 @@ namespace MvcProgram.Controllers
                 {
                     //登录成功
                     Session["MemberInfo"] = member;
-                    return RedirectToAction("Index", "Members", new { pageIndex =2 });//这里跳转。
+                    return RedirectToAction("Index", "Members", new { pageIndex = 1 });//这里跳转。
                 }
                 else
                 {

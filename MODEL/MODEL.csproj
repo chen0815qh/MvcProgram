@@ -68,6 +68,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>MessageBoardSys.edmx</DependentUpon>
     </Compile>
+    <Compile Include="MsgList.cs">
+      <DependentUpon>MessageBoardSys.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

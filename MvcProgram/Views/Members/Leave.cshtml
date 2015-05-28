@@ -11,12 +11,15 @@
         $(function () {
             var ue = UE.getEditor("editor");
         });
+
+
+
     </script>
 }
 <div>
     <img src="~/Content/Images/@Model.Portrait" width="120" height="120" />
 </div>
-<h4>给 <span style="color:Green;font-size:20px;">@(string.IsNullOrEmpty(Model.NickName)?Model.MemberAccount:Model.NickName)</span> 留言：</h4>
+<h4>给 <span style="color:Green;font-size:20px;">@(string.IsNullOrEmpty(Model.NickName) ? Model.MemberAccount : Model.NickName)</span> 留言：</h4>
 @{
     Html.BeginForm("Leave", "Members", FormMethod.Post);
 }
@@ -29,3 +32,12 @@
 @{
     Html.EndForm();
 }
+@*把alert脚本放到页面底端执行，这样就不会再浏览器alert的瞬间，背景都是灰色的。*@
+<script type="text/javascript">
+    @if(ViewData["MsgTip"]!=null)
+    {
+    <text>
+    alert("@ViewData["MsgTip"]");
+    </text>
+    }
+</script>

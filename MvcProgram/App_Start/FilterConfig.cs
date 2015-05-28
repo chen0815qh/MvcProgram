@@ -8,7 +8,7 @@ namespace MvcProgram
     {
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
-            filters.Add(new HandleExceptionAttribute());
+            //filters.Add(new HandleExceptionAttribute());
         }
     }
 }

@@ -10,12 +10,13 @@
 namespace MODEL
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class Members
+    public partial class MsgList
     {
+        public Nullable<long> RowIndex { get; set; }
         public int MemberId { get; set; }
         public string MemberAccount { get; set; }
+        public string Password { get; set; }
         public string Portrait { get; set; }
         public string NickName { get; set; }
         public string Gender { get; set; }
@@ -25,6 +26,11 @@ namespace MODEL
         public Nullable<System.DateTime> RegisterTime { get; set; }
         public Nullable<System.DateTime> LastLogin { get; set; }
         public string LastLoginIP { get; set; }
-        public string Password { get; set; }
+        public int MsgId { get; set; }
+        public int AuthorId { get; set; }
+        public string MsgContent { get; set; }
+        public Nullable<System.DateTime> AddTime { get; set; }
+        public string IP { get; set; }
+        public int ReplyId { get; set; }
     }
 }

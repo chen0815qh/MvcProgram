@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 namespace MODEL
 {
     //之所以使用部分类，是因为每次从数据库更新模型时会覆盖
+    [Serializable]
     public partial class Members
     {
         [Display(Name="确认密码")]

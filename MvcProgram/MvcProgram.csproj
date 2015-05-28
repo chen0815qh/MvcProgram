@@ -39,13 +39,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+    <Reference Include="EntityFramework, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>E:\MyCode\MvcSecurity\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.dll</HintPath>
-    </Reference>
-    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>E:\MyCode\MvcSecurity\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="RouteDebugger">
@@ -53,6 +49,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.Entity" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
@@ -136,9 +133,6 @@
     <Reference Include="Microsoft.AspNet.Identity.Owin">
       <HintPath>..\packages\Microsoft.AspNet.Identity.Owin.1.0.0\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.AspNet.Identity.EntityFramework">
-      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.1.0.0\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
-    </Reference>
     <Reference Include="Owin">
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
     </Reference>
@@ -185,21 +179,33 @@
     <Compile Include="Content\Js\UEditor\net\App_Code\NotSupportedHandler.cs" />
     <Compile Include="Content\Js\UEditor\net\App_Code\PathFormater.cs" />
     <Compile Include="Content\Js\UEditor\net\App_Code\UploadHandler.cs" />
-    <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\MembersController.cs" />
+    <Compile Include="Controllers\MembersController.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
-    <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Images\28da5903-3689-49eb-875c-dfb7156985c9b812c8fcc3cec3fd9340c874d488d43f879427b0.jpg" />
+    <Content Include="Content\Images\3b27eb6b-6dcb-4566-b252-41cdef4050a5f11f3a292df5e0fe8ab03f065e6034a85edf7208.jpg" />
     <Content Include="Content\Images\3c6d55fbb2fb43166d8f7bc823a4462308f7d3eb.jpg" />
+    <Content Include="Content\Images\49f4efc0-fc79-4c50-a50c-dd8b08009023962bd40735fae6cde509dcc50cb30f2443a70fd0.jpg" />
+    <Content Include="Content\Images\5679f3eb-5c45-4542-97ba-be33abc86aad1ad5ad6eddc451da95aff9cab2fd5266d01632b1.jpg" />
+    <Content Include="Content\Images\5c3d6ed9-c960-4565-af4d-20241be871463c6d55fbb2fb43166d8f7bc823a4462308f7d3eb.jpg" />
+    <Content Include="Content\Images\5de023e6-e589-4434-b6a0-ee0d4b9aa1b455e736d12f2eb938c9f760fcd7628535e5dd6f21.jpg" />
+    <Content Include="Content\Images\7248439d-7536-40b2-88d1-a4b10da3c40118d8bc3eb13533fa336b5ce9acd3fd1f40345b1c.jpg" />
+    <Content Include="Content\Images\967dd640-13bf-4c55-8c78-7fe99a00dfa637d12f2eb9389b50b07156538735e5dde7116e21.jpg" />
+    <Content Include="Content\Images\c369e27a-6e58-41c2-8288-b8fe58d19c909f510fb30f2442a78f5e58a4d343ad4bd113025a.jpg" />
+    <Content Include="Content\Images\d27f35a1-1c21-41eb-aaa3-b7c2598acc98c8177f3e6709c93d7a1c8a319c3df8dcd000540d.jpg" />
+    <Content Include="Content\Images\d9e4f192-a3ad-4fcf-a1a6-20ac1d5ff1d901300001212425130362984330814.jpg" />
+    <Content Include="Content\Images\de47ca5b-6cc8-4476-8995-2a8f55a5b7c9b03533fa828ba61e0bd9f7ef4534970a304e593e.jpg" />
     <Content Include="Content\Js\UEditor\dialogs\anchor\anchor.html" />
     <Content Include="Content\Js\UEditor\dialogs\attachment\attachment.css" />
     <Content Include="Content\Js\UEditor\dialogs\attachment\attachment.html" />

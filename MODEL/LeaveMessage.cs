@@ -19,7 +19,7 @@ namespace MODEL
         public int MemberId { get; set; }
         public string MsgContent { get; set; }
         public Nullable<System.DateTime> AddTime { get; set; }
-        public bool IsReply { get; set; }
         public string IP { get; set; }
+        public int ReplyId { get; set; }
     }
 }

@@ -12,6 +12,9 @@ namespace MODEL
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Objects;
+    using System.Data.Objects.DataClasses;
+    using System.Linq;
     
     public partial class MessageBoardSysEntities : DbContext
     {
@@ -27,5 +30,22 @@ namespace MODEL
     
         public DbSet<LeaveMessage> LeaveMessage { get; set; }
         public DbSet<Members> Members { get; set; }
+    
+        public virtual ObjectResult<MsgList> Proc_GetMessageList(Nullable<int> pageIndex, Nullable<int> pageSize, Nullable<int> memberId)
+        {
+            var pageIndexParameter = pageIndex.HasValue ?
+                new ObjectParameter("pageIndex", pageIndex) :
+                new ObjectParameter("pageIndex", typeof(int));
+    
+            var pageSizeParameter = pageSize.HasValue ?
+                new ObjectParameter("pageSize", pageSize) :
+                new ObjectParameter("pageSize", typeof(int));
+    
+            var memberIdParameter = memberId.HasValue ?
+                new ObjectParameter("memberId", memberId) :
+                new ObjectParameter("memberId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<MsgList>("Proc_GetMessageList", pageIndexParameter, pageSizeParameter, memberIdParameter);
+        }
     }
 }
