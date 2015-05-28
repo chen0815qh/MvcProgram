@@ -14,7 +14,7 @@ namespace MvcProgram.Attributes
             partial.ViewName = "~/Views/Errors/ExceptionMessage.cshtml";
             partial.ViewBag.ExceptionMsg = filterContext.Exception.Message;
             filterContext.Result = partial;
-            filterContext.ExceptionHandled = true;
+            filterContext.ExceptionHandled = true;//此举代码告诉框架，我们已经手动处理了异常，不需要再去有框架处理异常。
         }
     }
 }
