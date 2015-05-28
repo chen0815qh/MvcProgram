@@ -1,0 +1,138 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="MessageBoardSysModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="LeaveMessage">
+          <Key>
+            <PropertyRef Name="MsgId" />
+          </Key>
+          <Property Name="MsgId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AuthorId" Type="int" Nullable="false" />
+          <Property Name="MemberId" Type="int" Nullable="false" />
+          <Property Name="MsgContent" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="AddTime" Type="datetime" />
+          <Property Name="IsReply" Type="bit" Nullable="false" />
+          <Property Name="IP" Type="varchar" MaxLength="128" />
+        </EntityType>
+        <EntityType Name="Members">
+          <Key>
+            <PropertyRef Name="MemberId" />
+          </Key>
+          <Property Name="MemberId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="MemberAccount" Type="varchar" MaxLength="1024" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="512" Nullable="false" />
+          <Property Name="Portrait" Type="nvarchar" MaxLength="1024" />
+          <Property Name="NickName" Type="nvarchar" MaxLength="1024" />
+          <Property Name="Gender" Type="nvarchar" MaxLength="16" />
+          <Property Name="Age" Type="int" />
+          <Property Name="QQ" Type="varchar" MaxLength="32" />
+          <Property Name="Email" Type="nvarchar" MaxLength="128" />
+          <Property Name="RegisterTime" Type="datetime" />
+          <Property Name="LastLogin" Type="datetime" />
+          <Property Name="LastLoginIP" Type="varchar" MaxLength="128" />
+        </EntityType>
+        <EntityContainer Name="MessageBoardSysModelStoreContainer">
+          <EntitySet Name="LeaveMessage" EntityType="Self.LeaveMessage" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Members" EntityType="Self.Members" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="MessageBoardSysModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="LeaveMessage">
+          <Key>
+            <PropertyRef Name="MsgId" />
+          </Key>
+          <Property Name="MsgId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AuthorId" Type="Int32" Nullable="false" />
+          <Property Name="MemberId" Type="Int32" Nullable="false" />
+          <Property Name="MsgContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="AddTime" Type="DateTime" Precision="3" />
+          <Property Name="IsReply" Type="Boolean" Nullable="false" />
+          <Property Name="IP" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Members">
+          <Key>
+            <PropertyRef Name="MemberId" />
+          </Key>
+          <Property Name="MemberId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="MemberAccount" Type="String" MaxLength="1024" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Portrait" Type="String" MaxLength="1024" FixedLength="false" Unicode="true" />
+          <Property Name="NickName" Type="String" MaxLength="1024" FixedLength="false" Unicode="true" />
+          <Property Name="Gender" Type="String" MaxLength="16" FixedLength="false" Unicode="true" />
+          <Property Name="Age" Type="Int32" />
+          <Property Name="QQ" Type="String" MaxLength="32" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="RegisterTime" Type="DateTime" Precision="3" />
+          <Property Name="LastLogin" Type="DateTime" Precision="3" />
+          <Property Name="LastLoginIP" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="512" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityContainer Name="MessageBoardSysEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="LeaveMessage" EntityType="Self.LeaveMessage" />
+          <EntitySet Name="Members" EntityType="Self.Members" />
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="MessageBoardSysModelStoreContainer" CdmEntityContainer="MessageBoardSysEntities">
+          <EntitySetMapping Name="LeaveMessage">
+            <EntityTypeMapping TypeName="MessageBoardSysModel.LeaveMessage">
+              <MappingFragment StoreEntitySet="LeaveMessage">
+                <ScalarProperty Name="MsgId" ColumnName="MsgId" />
+                <ScalarProperty Name="AuthorId" ColumnName="AuthorId" />
+                <ScalarProperty Name="MemberId" ColumnName="MemberId" />
+                <ScalarProperty Name="MsgContent" ColumnName="MsgContent" />
+                <ScalarProperty Name="AddTime" ColumnName="AddTime" />
+                <ScalarProperty Name="IsReply" ColumnName="IsReply" />
+                <ScalarProperty Name="IP" ColumnName="IP" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Members">
+            <EntityTypeMapping TypeName="MessageBoardSysModel.Members">
+              <MappingFragment StoreEntitySet="Members">
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="MemberId" ColumnName="MemberId" />
+                <ScalarProperty Name="MemberAccount" ColumnName="MemberAccount" />
+                <ScalarProperty Name="Portrait" ColumnName="Portrait" />
+                <ScalarProperty Name="NickName" ColumnName="NickName" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="Age" ColumnName="Age" />
+                <ScalarProperty Name="QQ" ColumnName="QQ" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="RegisterTime" ColumnName="RegisterTime" />
+                <ScalarProperty Name="LastLogin" ColumnName="LastLogin" />
+                <ScalarProperty Name="LastLoginIP" ColumnName="LastLoginIP" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="true" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="无" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

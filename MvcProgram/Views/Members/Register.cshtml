@@ -1,0 +1,68 @@
+﻿@{
+    ViewBag.Title = "Register";
+}
+@model MODEL.Members
+@*@model用来指定当前页面从父类中继承来的属性Model的类型，不要;，这里指定了之后，才可以用泛型版本的表单方法。
+*@
+
+<h2>会员注册</h2>
+@section scripts{
+    @*@Scripts.Render("~/unobtrusive")*@
+}
+<div>
+    @{
+    // 禁用客户端表单元素的值合法性的脚本验证,用于测试。
+    //Html.EnableClientValidation(false);
+    }
+
+    @using (Html.BeginForm("Register", "Members", FormMethod.Post, new { enctype="multipart/form-data"}))
+    {
+        //注意@**@是Razor的注释语法。
+        @*class是C#关键字，所以要用@符号来转义。也可以将class的第一个字母大写开头，C#区分大小写*@
+        @Html.LabelFor(m => m.MemberAccount, new { @class = "col-md-2 control-label", style = "text-align:right" })
+        @Html.TextBoxFor(m => m.MemberAccount, new { @class = "form-control", style = "display:inline;margin-bottom:10px;" })
+        @Html.ValidationMessageFor(m => m.MemberAccount, "", new { style = "text-align:right" })
+        @*Html.ValidationMessage或者ValidationMessageFor只是在该位置生成一个html元素，当提交表单时,如果启用了客户端的js验证，那么微软的相关的的js库，
+            会自动校验表单值的合法性，如果校验不通过，则提示，并且不会提交，如果用户越过脚本，那么在服务器端也无法验证通过，最终代码执行到ValidationMessage的
+            时候，也会生成一个错误的消息提示，并且将这个错误消息提示随着页面的html代码一起发送到浏览器端。
+        *@
+        <br />
+        @Html.LabelFor(m => m.NickName, new { @class = "col-md-2 control-label", style = "text-align:right" })
+        @Html.TextBoxFor(m => m.NickName, new { @class = "form-control", style = "display:inline;margin-bottom:10px;" })
+
+        <br />
+        @Html.LabelFor(m => m.Portrait, new { @class = "col-md-2 control-label", style = "text-align:right" })
+        @*@Html.EditorFor(m => m.Portrait, new { @class = "form-control", style = "" })*@
+        <input type="file" name="Portrait" class="form-control" style="display: inline; margin-bottom: 10px;" />
+        @Html.ValidationMessageFor(m => m.Portrait)
+        <br />
+        @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label", style = "text-align:right" })
+        @Html.PasswordFor(m => m.Password, new { @class = "form-control", style = "display:inline;margin-bottom:10px;" })
+        @Html.ValidationMessageFor(m => m.Password)
+        <br />
+        @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-2 control-label", style = "text-align:right" })
+        @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", style = "display:inline;margin-bottom:10px;" })
+        @Html.ValidationMessageFor(m => m.ConfirmPassword)
+        <br />
+
+        @Html.LabelFor(m => m.Age, new { @class = "col-md-2 control-label", style = "text-align:right" })
+        @Html.TextBoxFor(m => m.Age, new { @class = "form-control", style = "display:inline;margin-bottom:10px;" })
+        @Html.ValidationMessageFor(m => m.Age)
+        <br />
+        @Html.LabelFor(m => m.QQ, new { @class = "col-md-2 control-label", style = "text-align:right" })
+        @Html.TextBoxFor(m => m.QQ, new { @class = "form-control", style = "display:inline;margin-bottom:10px;" })
+        @Html.ValidationMessageFor(m => m.QQ)
+        <br />
+        @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label", style = "text-align:right" })
+        @Html.TextBoxFor(m => m.Email, new { @class = "form-control", style = "display:inline;margin-bottom:10px;" })
+        <br />
+        @Html.LabelFor(m => m.Gender, new { @class = "col-md-2 control-label", style = "text-align:right" })
+        @Html.RadioButtonFor(m => m.Gender, "男", new { @checked="checked"}) <span>男</span>
+        @Html.RadioButtonFor(m => m.Gender, "女") <span>女</span>
+        <br />
+        <div>
+            @*@Html.ValidationSummary(false)*@
+            <span class="col-md-2 control-label"></span><input type="submit" value="注册" class="btn btn-default" />
+        </div>
+    }
+</div>
