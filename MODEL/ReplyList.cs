@@ -11,7 +11,7 @@ namespace MODEL
 {
     using System;
     
-    public partial class MsgList
+    public partial class ReplyList
     {
         public Nullable<long> RowIndex { get; set; }
         public int MemberId { get; set; }

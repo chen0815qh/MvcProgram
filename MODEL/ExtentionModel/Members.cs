@@ -20,5 +20,18 @@ namespace MODEL
             get;
             set;
         }
+
+        //public int MemberId { get; set; }
+        //public string MemberAccount { get; set; }
+        //public string Portrait { get; set; }
+        //public string NickName { get; set; }
+        //public string Gender { get; set; }
+        //public Nullable<int> Age { get; set; }
+        //public string QQ { get; set; }
+        //public string Email { get; set; }
+        //public Nullable<System.DateTime> RegisterTime { get; set; }
+        //public Nullable<System.DateTime> LastLogin { get; set; }
+        //public string LastLoginIP { get; set; }
+        //public string Password { get; set; }
     }
 }

@@ -1,20 +1,39 @@
 ﻿using MODEL;
 using System;
 using System.Collections.Generic;
-//using System.Data.Entity.Core.Objects;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-
 namespace MvcProgram.Controllers
 {
     public class MembersController : Controller
     {
         MessageBoardSysEntities context = new MessageBoardSysEntities();
-
-        public ActionResult Leave(int id)
+        [ValidateInput(false)]
+        [HttpPost]
+        //注意：url查询字符串中的参数值或者表单提交的值会自动映射到当前这个action的参数，但是名称必须保持一致。
+        public ActionResult Reply(int msgId,int memberId,string content)
         {
-            //这里读取出目标会员信息
+            Members member = Session["MemberInfo"] as Members;
+            //当在留言板中使用回复功能时，当前登录的用户就是回复者，而这条消息的
+            //接受者就是原来给当前会员留言者。
+            LeaveMessage msg = new LeaveMessage() { 
+            MsgContent=content,
+            MemberId=memberId,
+            AuthorId=member.MemberId,
+            AddTime=DateTime.Now,
+            IP=Request.UserHostAddress,
+            ReplyId=msgId
+            };
+            context.LeaveMessage.Add(msg);
+            context.SaveChanges();
+            var obj = new { Member = member, Msg = msg };
+            return Json(obj);//如果是get请求，那么请记得指定第二个参数return Json(obj,JsonRequestBehavior.AlowGet);否则报错
+        }
+
+        public ActionResult Leave(int id,int pageIndex=1)
+        {
+            //这里读取出目标会员信息(我们要给其留言的会员的信息)，用于在前台显示 给 某某 留言时的信息提取。
             Members member = context.Members.Where(m => m.MemberId == id).FirstOrDefault();
             Session["Member"] = member;
             if (member == null)
@@ -22,6 +41,17 @@ namespace MvcProgram.Controllers
                 //会员信息不存在
                 return RedirectToRoute("MemberList");
             }
+
+            Members currentMember = Session["MemberInfo"] as Members;//登录系统的会员，该会员要给上述的会员留言。
+
+            ViewBag.PageSize = 10;
+            ViewBag.PageIndex = pageIndex;
+            // context.LeaveMessage.Where(m => m.MemberId == member.MemberId || (m.AuthorId == member.MemberId && m.ReplyId != 0 && member.MemberId == id)).Count();
+            //读取出我们给别人留言的总数。
+            ViewBag.LeaveCount = context.LeaveMessage.Where(m => m.AuthorId == currentMember.MemberId && m.ReplyId == 0).Count();
+            //读取出给别人的留言，以及回复(自己给会员的回复和会员给我们的回复)等。
+            List<ReplyList> replyList = context.Proc_GetReplyList(pageIndex, 10, currentMember.MemberId, id).ToList();
+            ViewBag.ReplyList = replyList;
             return View(member);
         }
 
@@ -73,12 +103,15 @@ namespace MvcProgram.Controllers
             return View(memberList);
         }
 
-        public ActionResult MessageBoard(int page = 1)
+        public ActionResult MessageBoard(int id = 1)
         {
             Members member = Session["MemberInfo"] as Members;
+            ViewBag.PageSize = 10;
+            //留言总数。
+            ViewBag.MessageCount = context.LeaveMessage.Where(msg => msg.ReplyId == 0 && msg.MemberId == member.MemberId).Count();
             //这里获得某个会员的留言板的所有的记录，每页显示10条,这里包括了留言和回复哦。
-            List<MsgList> msgList= context.Proc_GetMessageList(page, 10, member.MemberId).ToList();//不要忘了引用System.Data.Entity这个程序集
-
+            List<MsgList> msgList = context.Proc_GetMessageList(id, 10, member.MemberId).ToList();//不要忘了引用System.Data.Entity这个程序集
+            
             return View(msgList);
         }
 
@@ -111,7 +144,7 @@ namespace MvcProgram.Controllers
                 {
                     //登录成功
                     Session["MemberInfo"] = member;
-                    return RedirectToAction("Index", "Members", new { pageIndex = 1 });//这里跳转。
+                    return RedirectToAction("Index", "Members", new { pageIndex = 1 });//这里跳转到交友广场。
                 }
                 else
                 {

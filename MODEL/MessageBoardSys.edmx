@@ -39,6 +39,12 @@
           <Parameter Name="pageSize" Type="int" Mode="In" />
           <Parameter Name="memberId" Type="int" Mode="In" />
         </Function>
+        <Function Name="Proc_GetReplyList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="pageIndex" Type="int" Mode="In" />
+          <Parameter Name="pageSize" Type="int" Mode="In" />
+          <Parameter Name="authorId" Type="int" Mode="In" />
+          <Parameter Name="memberId" Type="int" Mode="In" />
+        </Function>
         <EntityContainer Name="MessageBoardSysModelStoreContainer">
           <EntitySet Name="LeaveMessage" EntityType="Self.LeaveMessage" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Members" EntityType="Self.Members" Schema="dbo" store:Type="Tables" />
@@ -65,6 +71,7 @@
           </Key>
           <Property Name="MemberId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="MemberAccount" Type="String" MaxLength="1024" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="512" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Portrait" Type="String" MaxLength="1024" FixedLength="false" Unicode="true" />
           <Property Name="NickName" Type="String" MaxLength="1024" FixedLength="false" Unicode="true" />
           <Property Name="Gender" Type="String" MaxLength="16" FixedLength="false" Unicode="true" />
@@ -74,7 +81,6 @@
           <Property Name="RegisterTime" Type="DateTime" Precision="3" />
           <Property Name="LastLogin" Type="DateTime" Precision="3" />
           <Property Name="LastLoginIP" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
-          <Property Name="Password" Type="String" Nullable="false" MaxLength="512" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityContainer Name="MessageBoardSysEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="LeaveMessage" EntityType="Self.LeaveMessage" />
@@ -84,8 +90,35 @@
             <Parameter Name="pageSize" Mode="In" Type="Int32" />
             <Parameter Name="memberId" Mode="In" Type="Int32" />
           </FunctionImport>
+          <FunctionImport Name="Proc_GetReplyList" ReturnType="Collection(MessageBoardSysModel.ReplyList)">
+            <Parameter Name="pageIndex" Mode="In" Type="Int32" />
+            <Parameter Name="pageSize" Mode="In" Type="Int32" />
+            <Parameter Name="authorId" Mode="In" Type="Int32" />
+            <Parameter Name="memberId" Mode="In" Type="Int32" />
+          </FunctionImport>
         </EntityContainer>
         <ComplexType Name="MsgList">
+          <Property Type="Int64" Name="RowIndex" Nullable="true" />
+          <Property Type="Int32" Name="MemberId" Nullable="false" />
+          <Property Type="String" Name="MemberAccount" Nullable="false" MaxLength="1024" />
+          <Property Type="String" Name="Password" Nullable="false" MaxLength="512" />
+          <Property Type="String" Name="Portrait" Nullable="true" MaxLength="1024" />
+          <Property Type="String" Name="NickName" Nullable="true" MaxLength="1024" />
+          <Property Type="String" Name="Gender" Nullable="true" MaxLength="16" />
+          <Property Type="Int32" Name="Age" Nullable="true" />
+          <Property Type="String" Name="QQ" Nullable="true" MaxLength="32" />
+          <Property Type="String" Name="Email" Nullable="true" MaxLength="128" />
+          <Property Type="DateTime" Name="RegisterTime" Nullable="true" Precision="23" />
+          <Property Type="DateTime" Name="LastLogin" Nullable="true" Precision="23" />
+          <Property Type="String" Name="LastLoginIP" Nullable="true" MaxLength="128" />
+          <Property Type="Int32" Name="MsgId" Nullable="false" />
+          <Property Type="Int32" Name="AuthorId" Nullable="false" />
+          <Property Type="String" Name="MsgContent" Nullable="false" />
+          <Property Type="DateTime" Name="AddTime" Nullable="true" Precision="23" />
+          <Property Type="String" Name="IP" Nullable="true" MaxLength="128" />
+          <Property Type="Int32" Name="ReplyId" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="ReplyList">
           <Property Type="Int64" Name="RowIndex" Nullable="true" />
           <Property Type="Int32" Name="MemberId" Nullable="false" />
           <Property Type="String" Name="MemberAccount" Nullable="false" MaxLength="1024" />
@@ -115,22 +148,22 @@
           <EntitySetMapping Name="LeaveMessage">
             <EntityTypeMapping TypeName="MessageBoardSysModel.LeaveMessage">
               <MappingFragment StoreEntitySet="LeaveMessage">
-                <ScalarProperty Name="ReplyId" ColumnName="ReplyId" />
                 <ScalarProperty Name="MsgId" ColumnName="MsgId" />
                 <ScalarProperty Name="AuthorId" ColumnName="AuthorId" />
                 <ScalarProperty Name="MemberId" ColumnName="MemberId" />
                 <ScalarProperty Name="MsgContent" ColumnName="MsgContent" />
                 <ScalarProperty Name="AddTime" ColumnName="AddTime" />
                 <ScalarProperty Name="IP" ColumnName="IP" />
+                <ScalarProperty Name="ReplyId" ColumnName="ReplyId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Members">
             <EntityTypeMapping TypeName="MessageBoardSysModel.Members">
               <MappingFragment StoreEntitySet="Members">
-                <ScalarProperty Name="Password" ColumnName="Password" />
                 <ScalarProperty Name="MemberId" ColumnName="MemberId" />
                 <ScalarProperty Name="MemberAccount" ColumnName="MemberAccount" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
                 <ScalarProperty Name="Portrait" ColumnName="Portrait" />
                 <ScalarProperty Name="NickName" ColumnName="NickName" />
                 <ScalarProperty Name="Gender" ColumnName="Gender" />
@@ -146,6 +179,31 @@
           <FunctionImportMapping FunctionImportName="Proc_GetMessageList" FunctionName="MessageBoardSysModel.Store.Proc_GetMessageList">
             <ResultMapping>
               <ComplexTypeMapping TypeName="MessageBoardSysModel.MsgList">
+                <ScalarProperty Name="RowIndex" ColumnName="RowIndex" />
+                <ScalarProperty Name="MemberId" ColumnName="MemberId" />
+                <ScalarProperty Name="MemberAccount" ColumnName="MemberAccount" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Portrait" ColumnName="Portrait" />
+                <ScalarProperty Name="NickName" ColumnName="NickName" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="Age" ColumnName="Age" />
+                <ScalarProperty Name="QQ" ColumnName="QQ" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="RegisterTime" ColumnName="RegisterTime" />
+                <ScalarProperty Name="LastLogin" ColumnName="LastLogin" />
+                <ScalarProperty Name="LastLoginIP" ColumnName="LastLoginIP" />
+                <ScalarProperty Name="MsgId" ColumnName="MsgId" />
+                <ScalarProperty Name="AuthorId" ColumnName="AuthorId" />
+                <ScalarProperty Name="MsgContent" ColumnName="MsgContent" />
+                <ScalarProperty Name="AddTime" ColumnName="AddTime" />
+                <ScalarProperty Name="IP" ColumnName="IP" />
+                <ScalarProperty Name="ReplyId" ColumnName="ReplyId" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="Proc_GetReplyList" FunctionName="MessageBoardSysModel.Store.Proc_GetReplyList">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="MessageBoardSysModel.ReplyList">
                 <ScalarProperty Name="RowIndex" ColumnName="RowIndex" />
                 <ScalarProperty Name="MemberId" ColumnName="MemberId" />
                 <ScalarProperty Name="MemberAccount" ColumnName="MemberAccount" />

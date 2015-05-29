@@ -47,5 +47,26 @@ namespace MODEL
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<MsgList>("Proc_GetMessageList", pageIndexParameter, pageSizeParameter, memberIdParameter);
         }
+    
+        public virtual ObjectResult<ReplyList> Proc_GetReplyList(Nullable<int> pageIndex, Nullable<int> pageSize, Nullable<int> authorId, Nullable<int> memberId)
+        {
+            var pageIndexParameter = pageIndex.HasValue ?
+                new ObjectParameter("pageIndex", pageIndex) :
+                new ObjectParameter("pageIndex", typeof(int));
+    
+            var pageSizeParameter = pageSize.HasValue ?
+                new ObjectParameter("pageSize", pageSize) :
+                new ObjectParameter("pageSize", typeof(int));
+    
+            var authorIdParameter = authorId.HasValue ?
+                new ObjectParameter("authorId", authorId) :
+                new ObjectParameter("authorId", typeof(int));
+    
+            var memberIdParameter = memberId.HasValue ?
+                new ObjectParameter("memberId", memberId) :
+                new ObjectParameter("memberId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<ReplyList>("Proc_GetReplyList", pageIndexParameter, pageSizeParameter, authorIdParameter, memberIdParameter);
+        }
     }
 }
