@@ -137,6 +137,8 @@
     </Compile>
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Attributes\HandleExceptionAttribute.cs" />
+    <Compile Include="Attributes\IdentityCheckAttribute.cs" />
+    <Compile Include="Attributes\SkipAttribute.cs" />
     <Compile Include="Content\Js\UEditor\net\App_Code\Config.cs" />
     <Compile Include="Content\Js\UEditor\net\App_Code\ConfigHandler.cs" />
     <Compile Include="Content\Js\UEditor\net\App_Code\CrawlerHandler.cs" />
@@ -145,6 +147,7 @@
     <Compile Include="Content\Js\UEditor\net\App_Code\NotSupportedHandler.cs" />
     <Compile Include="Content\Js\UEditor\net\App_Code\PathFormater.cs" />
     <Compile Include="Content\Js\UEditor\net\App_Code\UploadHandler.cs" />
+    <Compile Include="Controllers\HandleErrorsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MembersController.cs">
       <SubType>Code</SubType>
@@ -157,6 +160,7 @@
     <Compile Include="Startup.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ValidateCode.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
@@ -174,6 +178,82 @@
     <Content Include="Content\Images\d27f35a1-1c21-41eb-aaa3-b7c2598acc98c8177f3e6709c93d7a1c8a319c3df8dcd000540d.jpg" />
     <Content Include="Content\Images\d9e4f192-a3ad-4fcf-a1a6-20ac1d5ff1d901300001212425130362984330814.jpg" />
     <Content Include="Content\Images\de47ca5b-6cc8-4476-8995-2a8f55a5b7c9b03533fa828ba61e0bd9f7ef4534970a304e593e.jpg" />
+    <Content Include="Content\Js\jquery-tmpl-master\.gitignore" />
+    <Content Include="Content\Js\jquery-tmpl-master\demos\movies\components\jquery-ui-1.8.1.custom.js" />
+    <Content Include="Content\Js\jquery-tmpl-master\demos\movies\components\jquery-ui-1.8.1.custom.min.js" />
+    <Content Include="Content\Js\jquery-tmpl-master\demos\movies\components\jquery.pager.js" />
+    <Content Include="Content\Js\jquery-tmpl-master\demos\movies\css\jquery-ui-1.8.1.custom.css" />
+    <Content Include="Content\Js\jquery-tmpl-master\demos\movies\css\movies.css" />
+    <Content Include="Content\Js\jquery-tmpl-master\demos\movies\images\ui-bg_diagonals-thick_75_f3d8d8_40x40.png" />
+    <Content Include="Content\Js\jquery-tmpl-master\demos\movies\images\ui-bg_dots-small_65_a6a6a6_2x2.png" />
+    <Content Include="Content\Js\jquery-tmpl-master\demos\movies\images\ui-bg_flat_0_333333_40x100.png" />
+    <Content Include="Content\Js\jquery-tmpl-master\demos\movies\images\ui-bg_flat_65_ffffff_40x100.png" />
+    <Content Include="Content\Js\jquery-tmpl-master\demos\movies\images\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="Content\Js\jquery-tmpl-master\demos\movies\images\ui-bg_glass_55_fbf8ee_1x400.png" />
+    <Content Include="Content\Js\jquery-tmpl-master\demos\movies\images\ui-bg_glass_75_dadada_1x400.png" />
+    <Content Include="Content\Js\jquery-tmpl-master\demos\movies\images\ui-bg_highlight-hard_100_eeeeee_1x100.png" />
+    <Content Include="Content\Js\jquery-tmpl-master\demos\movies\images\ui-bg_highlight-hard_100_f6f6f6_1x100.png" />
+    <Content Include="Content\Js\jquery-tmpl-master\demos\movies\images\ui-bg_highlight-soft_15_cc0000_1x100.png" />
+    <Content Include="Content\Js\jquery-tmpl-master\demos\movies\images\ui-icons_004276_256x240.png" />
+    <Content Include="Content\Js\jquery-tmpl-master\demos\movies\images\ui-icons_cc0000_256x240.png" />
+    <Content Include="Content\Js\jquery-tmpl-master\demos\movies\images\ui-icons_ffffff_256x240.png" />
+    <Content Include="Content\Js\jquery-tmpl-master\demos\movies\PagesCore\movies.html" />
+    <Content Include="Content\Js\jquery-tmpl-master\demos\movies\PagesCore\moviesNoGlobals.html" />
+    <Content Include="Content\Js\jquery-tmpl-master\demos\movies\PagesTmplPlus\movies1.html" />
+    <Content Include="Content\Js\jquery-tmpl-master\demos\movies\PagesTmplPlus\movies2.html" />
+    <Content Include="Content\Js\jquery-tmpl-master\demos\movies\PagesTmplPlus\movies3.html" />
+    <Content Include="Content\Js\jquery-tmpl-master\demos\resources\demos.css" />
+    <Content Include="Content\Js\jquery-tmpl-master\demos\resources\movielist.css" />
+    <Content Include="Content\Js\jquery-tmpl-master\demos\resources\syntaxhighlighter.css" />
+    <Content Include="Content\Js\jquery-tmpl-master\demos\resources\syntaxhighlighter.min.js" />
+    <Content Include="Content\Js\jquery-tmpl-master\demos\samplesCore\basic.html" />
+    <Content Include="Content\Js\jquery-tmpl-master\demos\samplesCore\composition.html" />
+    <Content Include="Content\Js\jquery-tmpl-master\demos\samplesCore\conditional.html" />
+    <Content Include="Content\Js\jquery-tmpl-master\demos\samplesCore\each.html" />
+    <Content Include="Content\Js\jquery-tmpl-master\demos\samplesCore\Interactive\resources\collapsed.png" />
+    <Content Include="Content\Js\jquery-tmpl-master\demos\samplesCore\Interactive\resources\empty.png" />
+    <Content Include="Content\Js\jquery-tmpl-master\demos\samplesCore\Interactive\resources\expanded.png" />
+    <Content Include="Content\Js\jquery-tmpl-master\demos\samplesCore\Interactive\resources\folder.png" />
+    <Content Include="Content\Js\jquery-tmpl-master\demos\samplesCore\Interactive\resources\tabs.css" />
+    <Content Include="Content\Js\jquery-tmpl-master\demos\samplesCore\Interactive\resources\treeView.css" />
+    <Content Include="Content\Js\jquery-tmpl-master\demos\samplesCore\Interactive\tabsTmpl.html" />
+    <Content Include="Content\Js\jquery-tmpl-master\demos\samplesCore\Interactive\tabsWrap.html" />
+    <Content Include="Content\Js\jquery-tmpl-master\demos\samplesCore\Interactive\tabsWrapImperative.html" />
+    <Content Include="Content\Js\jquery-tmpl-master\demos\samplesCore\Interactive\tabsWrapNested.html" />
+    <Content Include="Content\Js\jquery-tmpl-master\demos\samplesCore\Interactive\treeView.html" />
+    <Content Include="Content\Js\jquery-tmpl-master\demos\samplesCore\parameters.html" />
+    <Content Include="Content\Js\jquery-tmpl-master\demos\samplesTmplPlus\basic.html" />
+    <Content Include="Content\Js\jquery-tmpl-master\demos\samplesTmplPlus\composition.html" />
+    <Content Include="Content\Js\jquery-tmpl-master\demos\samplesTmplPlus\parameters.html" />
+    <Content Include="Content\Js\jquery-tmpl-master\demos\step-by-step.html" />
+    <Content Include="Content\Js\jquery-tmpl-master\demos\step-by-step\0_tmpl-read-only\0_local-data-source.html" />
+    <Content Include="Content\Js\jquery-tmpl-master\demos\step-by-step\0_tmpl-read-only\0_local-data.html" />
+    <Content Include="Content\Js\jquery-tmpl-master\demos\step-by-step\0_tmpl-read-only\1_remote-data-source.html" />
+    <Content Include="Content\Js\jquery-tmpl-master\demos\step-by-step\0_tmpl-read-only\1_remote-data.html" />
+    <Content Include="Content\Js\jquery-tmpl-master\demos\step-by-step\0_tmpl-read-only\2_html-tag-source.html" />
+    <Content Include="Content\Js\jquery-tmpl-master\demos\step-by-step\0_tmpl-read-only\2_html-tag.html" />
+    <Content Include="Content\Js\jquery-tmpl-master\demos\step-by-step\0_tmpl-read-only\3_if-else-tag-source.html" />
+    <Content Include="Content\Js\jquery-tmpl-master\demos\step-by-step\0_tmpl-read-only\3_if-else-tag.html" />
+    <Content Include="Content\Js\jquery-tmpl-master\demos\step-by-step\0_tmpl-read-only\4_each-tag-source.html" />
+    <Content Include="Content\Js\jquery-tmpl-master\demos\step-by-step\0_tmpl-read-only\4_each-tag.html" />
+    <Content Include="Content\Js\jquery-tmpl-master\demos\step-by-step\0_tmpl-read-only\5_javascript-source.html" />
+    <Content Include="Content\Js\jquery-tmpl-master\demos\step-by-step\0_tmpl-read-only\5_javascript.html" />
+    <Content Include="Content\Js\jquery-tmpl-master\demos\step-by-step\0_tmpl-read-only\6_hierarchical-data-source.html" />
+    <Content Include="Content\Js\jquery-tmpl-master\demos\step-by-step\0_tmpl-read-only\6_hierarchical-data.html" />
+    <Content Include="Content\Js\jquery-tmpl-master\demos\step-by-step\1_tmpl-interactive\0_accordion-switching-template-source.html" />
+    <Content Include="Content\Js\jquery-tmpl-master\demos\step-by-step\1_tmpl-interactive\0_accordion-switching-template.html" />
+    <Content Include="Content\Js\jquery-tmpl-master\demos\step-by-step\1_tmpl-interactive\1_tree-view-using-tmpl-tag-source.html" />
+    <Content Include="Content\Js\jquery-tmpl-master\demos\step-by-step\1_tmpl-interactive\1_tree-view-using-tmpl-tag.html" />
+    <Content Include="Content\Js\jquery-tmpl-master\demos\step-by-step\1_tmpl-interactive\2_tabs-using-wrap-tag-source.html" />
+    <Content Include="Content\Js\jquery-tmpl-master\demos\step-by-step\1_tmpl-interactive\2_tabs-using-wrap-tag.html" />
+    <Content Include="Content\Js\jquery-tmpl-master\jquery.tmpl.js" />
+    <Content Include="Content\Js\jquery-tmpl-master\jquery.tmpl.min.js" />
+    <Content Include="Content\Js\jquery-tmpl-master\jquery.tmplPlus.js" />
+    <Content Include="Content\Js\jquery-tmpl-master\jquery.tmplPlus.min.js" />
+    <Content Include="Content\Js\jquery-tmpl-master\tests\core.js" />
+    <Content Include="Content\Js\jquery-tmpl-master\tests\index.html" />
+    <Content Include="Content\Js\jquery-tmpl-master\tests\qunit.css" />
+    <Content Include="Content\Js\jquery-tmpl-master\tests\qunit.js" />
     <Content Include="Content\Js\UEditor\dialogs\anchor\anchor.html" />
     <Content Include="Content\Js\UEditor\dialogs\attachment\attachment.css" />
     <Content Include="Content\Js\UEditor\dialogs\attachment\attachment.html" />
@@ -462,6 +542,7 @@
     <Content Include="Content\Js\UEditor\third-party\video-js\font\vjs.eot" />
     <Content Include="Content\Js\UEditor\third-party\video-js\font\vjs.ttf" />
     <Content Include="Content\Js\UEditor\third-party\video-js\font\vjs.woff" />
+    <Content Include="Content\Js\jquery-tmpl-master\README.md" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -507,6 +588,7 @@
     <Content Include="Views\Members\Login.cshtml" />
     <Content Include="Views\Members\Leave.cshtml" />
     <Content Include="Views\Errors\ExceptionMessage.cshtml" />
+    <Content Include="Views\HandleErrors\Error404.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

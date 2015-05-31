@@ -26,6 +26,10 @@
     @(Html.Label("密码", new { @class = "col-md-2 control-label", style = "text-align:right" }))
     @(Html.Password("Password",null, new { @class = "form-control", style = "display:inline;margin-bottom:10px;" }))
     <br />
+    @Html.Label("验证码", new { @class = "col-md-2 control-label", style = "text-align:right" })
+    @Html.TextBox("Code", "", new { @class = "form-control", style = "display:inline;margin-bottom:10px;width:100px;" })
+    <img src="/Members/GenerateCode" />
+    <br />
     <label class="col-md-2 control-label"></label>
     <input type="submit" value="登录" class="btn btn-default" />@Html.ValidationSummary(true)
     <br />

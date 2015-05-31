@@ -36,7 +36,12 @@
                 margin: 0px;
                 line-height: 26px;
             }
+
+        .replyContainer {
+            position: relative;
+        }
     </style>
+    <script src="~/Content/Js/jquery-tmpl-master/jquery.tmpl.js"></script>
     <script src="~/Content/Js/UEditor/ueditor.config.js"></script>
     <script src="~/Content/Js/UEditor/ueditor.all.js"></script>
     <script src="~/Content/Js/UEditor/lang/zh-cn/zh-cn.js"></script>
@@ -48,49 +53,137 @@
                 var id = $(this).parent().parent().find("div.replyDiv").find("div.editor").attr("id");
                 ue = UE.getEditor(id);
             });
-            $("input[type=submit][replyid]").click(function () {
+            $("a[delmsg]").click(function () {
+                if (confirm("真的要删除该条留言吗?删除该留言将删除与该留言相关的所有回复")) {
+                    var msgId = $(this).attr("delmsg");
+                    var replyContainer = $(this).parents("div.replyContainer:eq(0)");
+
+                    $.post("/Members/DelMsg/" + msgId, null, function (data, status) {
+                        if (data.Status == "ok") {
+                            replyContainer.animate({ "left": "-40px", "top": "-100px", "opacity": "0" }, "slow", function () {
+                                replyContainer.remove();
+                            });
+                        }
+                        else {
+                            alert(data.Msg);
+                        }
+                    });
+                }
+            });
+            //显示和隐藏删除按钮
+            $("div.replyContainer").on("mouseenter", "div.reply", function () {
+                $(this).find("a[delreply]").show();
+            }).on("mouseleave", "div.reply", function () {
+                $(this).find("a[delreply]").hide();
+            });
+            //删除回复。
+            $("div.replyContainer").on("click", "a[delreply]", function () {
+                var msgId = $(this).attr("delreply");
+                var replyDiv = $(this).parents("div.reply:eq(0)");
+                $.post("/Members/Del/" + msgId, null, function (data, status) {
+                    if (data.Status == "ok") {
+                        replyDiv.fadeOut("slow", function () {
+                            replyDiv.remove();
+                        });
+                    }
+                    else {
+                        alert(data.Msg);
+                    }
+                });
+            });
+            //回复
+            $("input[type=submit][replyid][authorid]").click(function () {
 
                 var msgId = $(this).attr("replyid");
-                var authorid = $(this).attr("authorid");
+                var memberid = $(this).attr("authorid");
 
                 var content = ue.getContent();
 
-                jQuery.post("/Members/Reply", { msgId: msgId, memberId: authorid, content: content }, function (data, status) {
+                var replyDiv = $(this).parents("div.replyDiv:eq(0)");
+                var replyList = replyDiv.prev("#replyList");
+                jQuery.post("/Members/Reply", { msgId: msgId, memberId: memberid, content: content }, function (data, status) {
                     //注意：由于Reply返回的就是json，这里不需要使用$.parseJSON进行转换，也不要指定 dataType:"json"选项。
                     //data就是返回回来的json数据。
+                    replyList.append($("#replyTmpl").tmpl(data, {
+                        decode: function (str) {
+                            return decodeURIComponent(str);
+                        },
+                        parseDate: function (dateStr) {
+                            var date = new Date(parseInt(dateStr.toString().replace("/Date(", "").replace(")/", "").toString(), 10));
+                            var year, month, date1, hour, minute, second;
+                            year = date.getFullYear();
+                            month = date.getMonth() + 1;
+                            date1 = date.getDate();
+                            hour = date.getHours();
+                            minute = date.getMinutes();
+                            second = date.getSeconds();
 
+                            return year + "/" + month + "/" + date1 + " " + hour + ":" + minute + ":" + second;
+                        }
+                    }));
+                    replyDiv.hide();
                 });
+                return false;
             });
+
             $("input[cancelbtn]").click(function () {
                 $(this).parents("div.replyDiv").hide();
             });
         });
     </script>
-
+    <script type="text/x-jquery-tmpl" id="replyTmpl">
+        <div class="reply">
+            <div style="display:inline-block;vertical-align:top;">
+                <img src="/Content/Images/${Member.Portrait}" style="border-radius:8px;vertical-align:top;" width="35" height="35" />
+            </div>
+            <div style="display:inline-block;margin-left:10px;">
+                <div>
+                    ${Member.MemberAccount}<br /> {{html Msg.MsgContent}}
+                </div>
+                <div>
+                    ${$item.parseDate(Msg.AddTime)}
+                    <a href="javascript:void(0)" style="margin:0px 10px;display:none;" delreply="${Msg.MsgId}">删除</a>
+                </div>
+            </div>
+        </div>
+    </script>
 }
 <div style="border-bottom:1px solid #6c852d"></div>
 @{
     int count = 0;
+    int floorCount = 0;
+    int rowCount = 0;
+    int pageIndex = 0;
+
+    int pageSize = 10;
     Members currentMemberInfo = Session["MemberInfo"] as Members;
     List<MsgList> messageList = Model.Where(m => m.ReplyId == 0).ToList();//找出留言记录
     if (ViewBag.MessageCount != null)
     {
         count = ViewBag.MessageCount;//表示别人给我们的留言记录的总的条数。
+        rowCount = ViewBag.MessageCount;
+        pageIndex = Convert.ToInt32(ViewContext.RouteData.Values["id"]);
+        if (pageIndex <= 0)
+        {
+            pageIndex = 1;
+        }
+        pageSize = ViewBag.PageSize;
     }
 }
 @if (messageList != null && messageList.Count > 0)
 {
+    floorCount=rowCount-(pageIndex-1)*pageSize;
     foreach (MsgList msg in messageList)
     {
-        <div style="border-bottom:1px solid #dddddd;margin:10px 0px;padding:10px 0px;">
+        <div style="border-bottom:1px solid #dddddd;margin:10px 0px;padding:10px 0px;" class="replyContainer">
             <table style="width:100%;">
                 <tr>
                     <td style="width:80px;vertical-align:top;" rowspan="3">
                         <a href="@Url.RouteUrl("Default",new{controller="Members" ,action="Leave" ,id=msg.AuthorId})"><img class="portrait" style="border-radius:8px;" src="~/Content/Images/@msg.Portrait" width="50" height="50" /></a>
                     </td>
                     <td style="vertical-align:top;">
-                        <div style="color:Gray;float:left;"><span style="font-weight:bolder;color:Red;">@msg.MemberAccount</span> 第 @count 楼 </div>
-                        <div style="float:right;"><a href="javascript:void(0);">删除</a></div>
+                        <div style="color:Gray;float:left;"><span style="font-weight:bolder;color:Red;">@(msg.MemberId == currentMemberInfo.MemberId ? "我" : msg.MemberAccount)</span> 第 @floorCount 楼 </div>
+                        <div style="float:right;"><a href="javascript:void(0);" delmsg="@msg.MsgId">删除</a></div>
                         <div style="clear:both;height:0px;"></div>
                     </td>
                 </tr>
@@ -103,7 +196,7 @@
                             @msg.AddTime
                             <a href="javascript:void(0)" replyid="@msg.MsgId" style="margin:0px 10px;"> 回复 </a>
                         </div>
-                        <div>
+                        <div id="replyList">
                             @{
         List<MsgList> replyList = Model.Where(m => m.ReplyId == msg.MsgId || (m.ReplyId == msg.MsgId && msg.AuthorId == currentMemberInfo.MemberId)).ToList().OrderBy(ml => ml.AddTime).ToList();
         foreach (MsgList m in replyList)
@@ -114,9 +207,9 @@
                 </div>
                 <div style="display:inline-block;margin-left:10px;">
                     <div>
-                        @m.MemberAccount @(new MvcHtmlString(HttpUtility.HtmlDecode(m.MsgContent)))
+                        @(m.MemberId == currentMemberInfo.MemberId ? "我" : m.MemberAccount) @(new MvcHtmlString(HttpUtility.HtmlDecode(m.MsgContent)))
                     </div>
-                    <div>@m.AddTime</div>
+                    <div>@m.AddTime <a href="javascript:void(0)" style="margin:0px 10px;display:none;" delreply="@m.MsgId">删除</a></div>
                 </div>
             </div>
         }
@@ -125,7 +218,7 @@
                         <div class="replyDiv">
                             <div class="editor" id="editor@(count)"></div>
                             <div style="margin:10px 0px;">
-                                <input type="submit" value="确定" replyid="@msg.MsgId" authorid="@msg.MemberId" class="btn btn-default" />
+                                <input type="submit" value="回复" replyid="@msg.MsgId" authorid="@msg.MemberId" class="btn btn-default" />
                                 <input type="submit" value="取消" cancelbtn class="btn btn-default" />
                             </div>
                         </div>
@@ -133,20 +226,14 @@
                 </tr>
             </table>
         </div>
-        count--;//用于记录楼层。
+        floorCount--;//用于记录楼层。
     }
 
     <div class="pageBar">
         @*这里得到分页条*@
         @if (ViewBag.MessageCount != null)
         {
-            int rowCount = ViewBag.MessageCount;
-            int pageIndex = Convert.ToInt32(ViewContext.RouteData.Values["id"]);
-            if (pageIndex <= 0)
-            {
-                pageIndex = 1;
-            }
-            int pageSize = ViewBag.PageSize;
+
             int pageCount = rowCount % pageSize == 0 ? rowCount / pageSize : rowCount / pageSize + 1;
             int nextPageIndex = pageIndex >= pageCount ? pageCount : pageIndex + 1;
             int previousPageIndex = pageIndex <= 1 ? 1 : pageIndex - 1;
@@ -162,7 +249,7 @@
                 {
                     if (pageIndex - i > 0)
                     {
-                        <a href="@Url.RouteUrl("Default",new{controller="Members",action="MessageBoard", pageIndex=pageIndex-i})">@(pageIndex - i)</a>
+                        <a href="@Url.RouteUrl("Default",new{controller="Members",action="MessageBoard", id=pageIndex-i})">@(pageIndex - i)</a>
                     }
                 }
 

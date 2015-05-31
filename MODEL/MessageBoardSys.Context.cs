@@ -68,5 +68,18 @@ namespace MODEL
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<ReplyList>("Proc_GetReplyList", pageIndexParameter, pageSizeParameter, authorIdParameter, memberIdParameter);
         }
+    
+        public virtual int Proc_DelMsg(Nullable<int> msgId, Nullable<int> memberId, ObjectParameter returnValue)
+        {
+            var msgIdParameter = msgId.HasValue ?
+                new ObjectParameter("msgId", msgId) :
+                new ObjectParameter("msgId", typeof(int));
+    
+            var memberIdParameter = memberId.HasValue ?
+                new ObjectParameter("memberId", memberId) :
+                new ObjectParameter("memberId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("Proc_DelMsg", msgIdParameter, memberIdParameter, returnValue);
+        }
     }
 }

@@ -4,19 +4,14 @@
     Members member = Session["MemberInfo"] as Members;
 }
 @*这个是分部视图，分部视图类似于WEB FORM中的用户自定义控件。*@
-@if (member!=null)
+@if (member != null)
 {
-    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
-    {
-    @Html.AntiForgeryToken()
-
     <ul class="nav navbar-nav navbar-right">
         <li>
-            @Html.ActionLink("你好 " + member.MemberAccount + "!", "Manage", "Account", routeValues: null, htmlAttributes: new { title = "管理" })
+            <a href="javascritp:void(0);">@("你好 " + member.MemberAccount + "!")</a>
         </li>
-        <li><a href="javascript:document.getElementById('logoutForm').submit()">注销</a></li>
+        <li><a href="/Members/SignOut">注销</a></li>
     </ul>
-    }
 }
 else
 {
