@@ -32,7 +32,6 @@
 
         <br />
         @Html.LabelFor(m => m.Portrait, new { @class = "col-md-2 control-label", style = "text-align:right" })
-        @*@Html.EditorFor(m => m.Portrait, new { @class = "form-control", style = "" })*@
         <input type="file" name="Portrait" class="form-control" style="display: inline; margin-bottom: 10px;" />
         @Html.ValidationMessageFor(m => m.Portrait)
         <br />
