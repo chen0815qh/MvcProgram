@@ -51,7 +51,16 @@
             $("a[replyid]").click(function () {
                 $(this).parent().parent().find("div.replyDiv").show();
                 var id = $(this).parent().parent().find("div.replyDiv").find("div.editor").attr("id");
-                ue = UE.getEditor(id);
+                try
+                {
+                    ue = UE.getEditor(id);
+                }
+                catch(e)
+                {
+                    alert(e);
+                }
+                
+              
             });
             $("a[delmsg]").click(function () {
                 if (confirm("真的要删除该条留言吗?删除该留言将删除与该留言相关的所有回复")) {
@@ -216,7 +225,7 @@
                             }
                         </div>
                         <div class="replyDiv">
-                            <div class="editor" id="editor@(count)"></div>
+                            <div class="editor" id="editor@(floorCount)"></div>
                             <div style="margin:10px 0px;">
                                 <input type="submit" value="回复" replyid="@msg.MsgId" authorid="@msg.MemberId" class="btn btn-default" />
                                 <input type="submit" value="取消" cancelbtn class="btn btn-default" />
